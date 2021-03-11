@@ -5,7 +5,7 @@ exit = sys.exit
 from telegram.ext import Updater, MessageHandler, CommandHandler, CallbackContext
 from telegram.ext.filters import Filters
 from telegram.error import InvalidToken
-from telegram import ParseMode, Update
+from telegram import ParseMode, Update, Bot
 logging.basicConfig(level=logging.INFO,format="%(asctime)s %(levelname)s[%(name)s] %(message)s")
 log = logging.getLogger("MainScript")
 
@@ -17,15 +17,17 @@ def token():
         log.error("No token.txt!")
         return ""
 
-def rawhandler(update, context):
-    msg = update.message.text
-    log.info("Received message with content: {}".format(msg))
-    if msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
-        log.info("Konami Command!")
-        update.message.reply_text("Konami Command!")
-        update.message.reply_text("😜")
-    else:
-        update.message.reply_text(msg)
+def GRH(bot):
+    def rawhandler(update, context):
+        msg = update.message.text
+        log.info("Received message with content: {}".format(msg))
+        if msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
+            log.info("Konami Command!")
+            bot.sendMessage(update.message.chat_id, "Konami Command!")
+            bot.sendMessage(update.message.chat_id, "😜")
+        else:
+            bot.sendMessage(update.message.chat_id, msg)
+    return MessageHandler(Filters.text, rawhandler)
 
 def starttxt():
     try:
@@ -51,7 +53,8 @@ def main(tok):
         log.critical("No token!")
         exit(3)
     try:
-        updater = Updater(tok, use_context=True)
+        bot = Bot(token=tok)
+        updater = Updater(bot=bot, use_context=True)
         log.info("Get updater success!")
     except InvalidToken:
         log.critical("Invalid Token! Plase edit token.txt and fill in a valid token.")
@@ -59,7 +62,7 @@ def main(tok):
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("ping", GetCMDCallBack("ping","pong")))
     dp.add_handler(CommandHandler("start", GetCMDCallBack("start",starttxt())))
-    dp.add_handler(MessageHandler(Filters.text, rawhandler))
+    dp.add_handler(GRH(bot))
     updater.start_polling()
     log.info("Started the bot! Use Ctrl-C to stop it.")
     updater.idle()
