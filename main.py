@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 import sys, re, logging
 exit = sys.exit
 from telegram.ext import Updater, MessageHandler, CommandHandler, CallbackContext
@@ -18,7 +20,12 @@ def token():
 def rawhandler(update, context):
     msg = update.message.text
     log.info("Received message with content: {}".format(msg))
-    update.message.reply_text(msg)
+    if msg == "WWSSAADD" or msg == "^^vv<<>>":
+        log.info("Konami Command!")
+        update.message.reply_text("Konami Command!")
+        update.message.reply_text("😜")
+    else:
+        update.message.reply_text(msg)
 
 def starttxt():
     try:
