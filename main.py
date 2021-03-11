@@ -20,6 +20,26 @@ def rawhandler(update, context):
     log.info("Received message with content: {}".format(msg))
     update.message.reply_text(msg)
 
+def starttxt():
+    try:
+        with open("start.txt","r") as f:
+            return f.read().rstrip('\n')
+    except FileNotFoundError:
+        log.warning("No start.txt, using the example.")
+        try:
+            with open("start.txt.example","r") as f:
+                return f.read().rstrip('\n')
+        except FileNotFoundError:
+            log.warning("No start.txt.example!")
+            return ""
+
+def GetCMDCallBack(cname,rcont,loc,bot):
+    def CMDCB(update: Update, context: CallbackContext):
+        log.info("Got {} command!".format(cname))
+        update.message.reply_text(rcont,parse_mode=ParseMode.MARKDOWN_V2)
+        bot.send_message(loc,disable_notification=True, text="Type: Command Log\nUser ID: {}\nFirst name: {}\nUsed Command: /{}".format(update.message.from_user.id,update.message.from_user.first_name,cname))
+    return CMDCB
+
 def main(tok):
     if tok == "":
         log.critical("No token!")
