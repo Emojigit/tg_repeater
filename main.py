@@ -33,11 +33,10 @@ def starttxt():
             log.warning("No start.txt.example!")
             return ""
 
-def GetCMDCallBack(cname,rcont,loc,bot):
+def GetCMDCallBack(cname,rcont,loc):
     def CMDCB(update: Update, context: CallbackContext):
         log.info("Got {} command!".format(cname))
         update.message.reply_text(rcont,parse_mode=ParseMode.MARKDOWN_V2)
-        bot.send_message(loc,disable_notification=True, text="Type: Command Log\nUser ID: {}\nFirst name: {}\nUsed Command: /{}".format(update.message.from_user.id,update.message.from_user.first_name,cname))
     return CMDCB
 
 def main(tok):
@@ -52,6 +51,8 @@ def main(tok):
         raise
     dp = updater.dispatcher
     dp.add_handler(MessageHandler(Filters.text, rawhandler))
+    dp.add_handler(CommandHandler("ping", GetCMDCallBack("ping","pong",loc)))
+    dp.add_handler(CommandHandler("start", GetCMDCallBack("start",starttxt(),loc)))
     updater.start_polling()
     log.info("Started the bot! Use Ctrl-C to stop it.")
     updater.idle()
