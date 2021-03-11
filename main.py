@@ -20,7 +20,7 @@ def token():
 def rawhandler(update, context):
     msg = update.message.text
     log.info("Received message with content: {}".format(msg))
-    if msg == "WWSSAADD" or msg == "^^vv<<>>":
+    if msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
         log.info("Konami Command!")
         update.message.reply_text("Konami Command!")
         update.message.reply_text("😜")
