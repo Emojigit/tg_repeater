@@ -26,7 +26,7 @@ def GRH(bot):
             bot.sendMessage(update.message.chat_id, "Konami Command!")
             bot.sendMessage(update.message.chat_id, "😜")
         else:
-            bot.sendMessage(update.message.chat_id, msg)
+            bot.sendMessage(update.message.chat_id, re.sub('@[a-zA-Z0-9]+[ ]?', '<ping>', msg))
     return MessageHandler(Filters.text, rawhandler)
 
 def starttxt():
