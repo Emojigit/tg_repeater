@@ -8,6 +8,7 @@ from telegram.error import InvalidToken
 from telegram import ParseMode, Update, Bot
 logging.basicConfig(level=logging.INFO,format="%(asctime)s %(levelname)s[%(name)s] %(message)s")
 log = logging.getLogger("MainScript")
+chans = []
 
 def token():
     try:
@@ -23,12 +24,15 @@ def GRH(bot):
         log.info("Received message with content: {}".format(msg))
         if msg.startswith(("(NOMO)","(NOREPEAT)","(NORE)")):
             log.info("Prefix matched!")
-        elif msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
+            return
+        if update.message.chat_id not in chans:
+            chans.append(update.message.chat_id)
+        if msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
             log.info("Konami Command!")
             bot.sendMessage(update.message.chat_id, "Konami Command!")
             bot.sendMessage(update.message.chat_id, "😜")
         else:
-            bot.sendMessage(update.message.chat_id, re.sub('@[a-zA-Z0-9]+[ ]?', '<ping>', msg))
+            bot.sendMessage(update.message.chat_id, re.sub('@[a-zA-Z0-9_]+[ ]?', '<ping>', msg))
     return MessageHandler(Filters.text, rawhandler)
 
 def starttxt():
