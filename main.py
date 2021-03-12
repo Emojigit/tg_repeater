@@ -21,7 +21,9 @@ def GRH(bot):
     def rawhandler(update, context):
         msg = update.message.text
         log.info("Received message with content: {}".format(msg))
-        if msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
+        if msg.startswith(("(NOMO)","(NOREPEAT)","(NORE)")):
+            log.info("Prefix matched!")
+        elif msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
             log.info("Konami Command!")
             bot.sendMessage(update.message.chat_id, "Konami Command!")
             bot.sendMessage(update.message.chat_id, "😜")
