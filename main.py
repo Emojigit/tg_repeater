@@ -1,14 +1,24 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-import sys, re, logging
+import sys, re, logging, git, os
 exit = sys.exit
 from telegram.ext import Updater, MessageHandler, CommandHandler, CallbackContext
 from telegram.ext.filters import Filters
 from telegram.error import InvalidToken
 from telegram import ParseMode, Update, Bot
+from git.exc import InvalidGitRepositoryError
 logging.basicConfig(level=logging.INFO,format="%(asctime)s %(levelname)s[%(name)s] %(message)s")
 log = logging.getLogger("MainScript")
 chans = []
+
+def dirty():
+    fd = os.path.dirname(os.path.realpath(__file__))
+    try:
+        gr = git.Repo(fd)
+    except InvalidGitRepositoryError:
+        return false
+    return gr.is_dirty(untracked_files=True)
+    
 
 def token():
     try:
@@ -27,6 +37,8 @@ def GRH(bot):
             return
         if update.message.chat_id not in chans:
             chans.append(update.message.chat_id)
+            if dirty():
+                bot.sendMessage(update.message.chat_id, "This bot is not in the stable state.")
         if msg == "WWSSAADD" or msg == "^^vv<<>>" or msg == "573" or msg == "WWSSAADD573" or msg == "^^vv<<>>573":
             log.info("Konami Command!")
             bot.sendMessage(update.message.chat_id, "Konami Command!")
