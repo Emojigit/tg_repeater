@@ -44,7 +44,12 @@ def GRH(bot):
             bot.sendMessage(update.message.chat_id, "Konami Command!")
             bot.sendMessage(update.message.chat_id, "😜")
         else:
-            bot.sendMessage(update.message.chat_id, re.sub('@[a-zA-Z0-9_]+[ ]?', '<ping>', msg))
+            # Do not ping!
+            RMSG = re.sub('@[a-zA-Z0-9_]+[ ]?', '<ping>', msg)
+            # Eric Liu wear girl's dressing, a meme on zh wikipedia
+            RMSG = RMSG.replace("劉醬快女裝！", "我十分同意！")
+            RMSG = RMSG.replace("劉醬女裝！", "我100%同意！")
+            bot.sendMessage(update.message.chat_id, RMSG)
     return MessageHandler(Filters.text, rawhandler)
 
 def starttxt():
