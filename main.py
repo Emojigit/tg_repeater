@@ -49,6 +49,8 @@ def GRH(bot):
             # Eric Liu wear girl's dressing, a meme on zh wikipedia
             RMSG = RMSG.replace("劉醬快女裝！", "我十分同意！")
             RMSG = RMSG.replace("劉醬女裝！", "我100%同意！")
+            # How dare you?
+            RMSG = RMSG.replace("How dare you?", "Greta Thunberg said: \"How dare you?\"")
             bot.sendMessage(update.message.chat_id, RMSG)
     return MessageHandler(Filters.text, rawhandler)
 
