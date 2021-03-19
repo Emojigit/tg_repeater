@@ -54,6 +54,18 @@ def GRH(bot):
             bot.sendMessage(update.message.chat_id, RMSG)
     return MessageHandler(Filters.text, rawhandler)
 
+def GOH(bot):
+    def otherhandler(update, context):
+        log.info("Received other message!")
+        if update.message.chat_id not in chans:
+            chans.append(update.message.chat_id)
+            if dirty():
+                bot.sendMessage(update.message.chat_id, "This bot is not in the stable state.")
+        bot.forward_message(chat_id=update.message.chat_id,
+                        from_chat_id=update.message.chat_id,
+                        message_id=update.message.message_id)
+    return MessageHandler(Filters.all, otherhandler)
+
 def starttxt():
     try:
         with open("start.txt","r") as f:
@@ -88,6 +100,7 @@ def main(tok):
     dp.add_handler(CommandHandler("ping", GetCMDCallBack("ping","pong")))
     dp.add_handler(CommandHandler("start", GetCMDCallBack("start",starttxt())))
     dp.add_handler(GRH(bot))
+    dp.add_handler(GOH(bot))
     updater.start_polling()
     log.info("Started the bot! Use Ctrl-C to stop it.")
     updater.idle()
