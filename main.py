@@ -46,7 +46,7 @@ def GRH(bot):
         else:
             # Eric Liu wear girl's dressing BOOST!
             if msg.contains("Eric") or msg.contains("女裝") or msg.contains("劉醬") or msg.contains("刘酱"):
-		bot.sendMessage(update.message.chat_id, "劉醬快女裝！")
+                bot.sendMessage(update.message.chat_id, "劉醬快女裝！")
             # Do not ping!
             RMSG = re.sub('@[a-zA-Z0-9_]+[ ]?', '<ping>', msg)
             # Eric Liu wear girl's dressing, a meme on zh wikipedia
